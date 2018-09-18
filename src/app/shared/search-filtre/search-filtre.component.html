@@ -1,3 +1,9 @@
-<p>
-  search-filtre works!
-</p>
+<h4> Búsqueda </h4>
+<section>
+    <input #searchText    
+    name="search"
+    type="text"
+    placeholder="Escriba para la búsqueda"
+    (keyup)="search.next(searchText.value)">
+</section>
+  
