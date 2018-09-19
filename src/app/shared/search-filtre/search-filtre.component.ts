@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-filtre.component.css']
 })
 export class SearchFiltreComponent implements OnInit {
-
+  listaCriterio: any[];
   constructor() { }
 
   ngOnInit() {
   }
+
+
 
 }

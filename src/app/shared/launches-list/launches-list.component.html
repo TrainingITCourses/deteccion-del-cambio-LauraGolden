@@ -1,1 +1,12 @@
 <h4> Lista de resultados </h4>
+
+    <a ul
+       *ngFor="let lanzamiento of lanzamientos" >      
+       {{ lanzamiento.name }}
+    </a>
+
+    <li *ngFor="let lanzamiento of lanzamientos; let i=index">
+        <div class="timeline-badge">
+            <span>{{lanzamiento.name}}</span>
+        </div>
+    </li>
