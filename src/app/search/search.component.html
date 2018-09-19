@@ -3,12 +3,13 @@
         <div id="header">
             <h1 style = "color:#018383" align="center">Buscador Lanzamientos</h1>
         </div>
-        <div id="content">
-            <!-- <app-search></app-search> -->
-            <app-criterion (criterio)="onCriterioSeleccionado($event)"></app-criterion>        
-            <app-launches-list [lanzamientos]="lanFiltrados"></app-launches-list>
-        </div>
-    </div>
-   
+        <app-criterion
+            [seleccionado] = "seleccionado"
+            [subCriterios] = "subCriterios"            
+            (criterioSeleccionado)="onCriterioSeleccionado($event)">
+        </app-criterion>        
+        <app-launches-list             
+            [lanzamientos]="lanzamientos">
+        </app-launches-list>
+    </div>   
 </div>
-<!-- <app-search-filtre (criterio)="onCriterioSeleccionado($event)"></app-search-filtre> -->

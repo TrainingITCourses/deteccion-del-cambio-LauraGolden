@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-criterion',
@@ -6,18 +6,21 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./criterion.component.css']
 })
 export class CriterionComponent implements OnInit {
-  criterio: string;
+  @Input() public subCriterios: any[];
+  @Input() public seleccionado = '';
   @Output() public criterioSeleccionado = new EventEmitter<string>();
+  @Output() public SubcriterioSeleccionado = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {
 
   }
 
-  SelCriterio() {
-    if (this.criterio !== '') {
-
-    }
+  SelCriterio($event) {
+    this.criterioSeleccionado.next($event.srcElement.value);
   }
 
+  SelSubCriterio($event) {
+    this.SubcriterioSeleccionado.next($event.srcElement.value);
+  }
 }
