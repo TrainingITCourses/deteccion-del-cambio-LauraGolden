@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { SearchComponent} from './search/search.component';
 import { LaunchesListComponent } from './shared/launches-list/launches-list.component';
 import { CriterionComponent } from './shared/criterion/criterion.component';
-import { SearchFiltreComponent } from './shared/search-filtre/search-filtre.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +13,6 @@ import { SearchFiltreComponent } from './shared/search-filtre/search-filtre.comp
     SearchComponent,
     LaunchesListComponent,
     CriterionComponent,
-    SearchFiltreComponent
   ],
   imports: [
     BrowserModule,

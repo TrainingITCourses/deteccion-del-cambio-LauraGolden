@@ -40,14 +40,14 @@ export class ApiService {
   public getMissionTypes = (): Observable<any[]> =>
     this.http
       .get(environment.url + '/assets/launchmissions.json')
-      .pipe(map((res: any) => res.types));
+      .pipe(map((res: any) => res.types))
 
   public getStatusTypes$ = (): Observable<any[]> =>
     this.http.get(environment.url + '/assets/launchstatus.json').pipe(
       map((res: any) => res.types),
       map((res: any[]) => res.map(this.setStatusColor)),
       tap((res: any[]) => (this.statuses = res))
-    );
+    )
   private setStatusColor = statusType => {
     switch (statusType.id) {
       case 1:
@@ -65,5 +65,5 @@ export class ApiService {
         break;
     }
     return statusType;
-  };
+  }
 }

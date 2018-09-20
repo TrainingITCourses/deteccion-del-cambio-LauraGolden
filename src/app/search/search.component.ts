@@ -11,7 +11,7 @@ import { ApiService } from '../core/api.service';
 })
 export class SearchComponent implements OnInit {
   private dataE: any[];
-  public dataA: any[];
+  private dataA: any[];
   private dataT: any[];
   public lanzamientos: any[];
   public lanFiltrados: any[] = [];
@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.seleccionado = '';
+    console.log('OnInitSearch');
   }
 
 
@@ -43,6 +44,9 @@ export class SearchComponent implements OnInit {
         this.criterioActual = 'Agencia';
         break;
       case 'Tipo':
+        this.getTipos();
+        this.subCriterios = this.dataT;
+        this.criterioActual = 'Tipo';
         break;
     }
   }
@@ -50,18 +54,18 @@ export class SearchComponent implements OnInit {
   getAgencias = () => {
     this.api
       .getAgencies()
-      .subscribe((res: any[]) => this.subCriterios = res);
-      // if (this.dataA === undefined) {
-      //   this.dataA = [];
-      // }
+      .subscribe((res: any[]) => this.dataA = res);
   }
   getEstados = () => {
     this.api
       .getStatusTypes$()
       .subscribe((res: any[]) => this.dataE = res);
-      if (this.dataE === undefined) {
-        this.dataE = [];
-      }
+  }
+
+  getTipos = () => {
+    this.api
+      .getMissionTypes()
+      .subscribe((res: any[]) => this.dataT = res);
   }
 
   onSubCriterioSeleccionado = (SubcriterioSel: any) => {
@@ -71,29 +75,31 @@ export class SearchComponent implements OnInit {
       case 'Vacio':
       break;
       case 'Estado':
-      break;
+          const filtroEstado = this.api.launches.filter(
+            l =>
+              l.name.toLowerCase().includes(search) ||
+              l.location.name.toLowerCase().includes(search)
+          );
+          this.lanzamientos = filtroEstado;
+        break;
       case 'Agencia':
-      const filteredLaunches = this.api.launches.filter(
-        l =>
-          l.name.toLowerCase().includes(search) ||
-          l.location.name.toLowerCase().includes(search)
-      );
-      this.lanzamientos = filteredLaunches;
-      break;
+        const filtroAgencia = this.api.launches.filter(
+          l =>
+            l.name.toLowerCase().includes(search) ||
+            l.location.name.toLowerCase().includes(search)
+        );
+        this.lanzamientos = filtroAgencia;
+        break;
       case 'Tipo':
+        const filtroTipo = this.api.launches.filter(
+          l =>
+            l => l.missions.id === search
+        );
+        this.lanzamientos = filtroTipo;
+
+        // tslint:disable-next-line:max-line-length
+        console.log(this.lanzamientos);
       break;
     }
   }
-
-  onFiltrar = (searchText: string) => {
-    const search = searchText.toLowerCase();
-    const filteredLaunches = this.api.launches.filter(
-      l =>
-        l.name.toLowerCase().includes(search) ||
-        l.location.name.toLowerCase().includes(search)
-    );
-
-    // this.filteredLaunches = filteredLaunches;
-  };
-
 }
