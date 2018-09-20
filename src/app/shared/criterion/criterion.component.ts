@@ -9,7 +9,7 @@ export class CriterionComponent implements OnInit {
   @Input() public subCriterios: any[];
   @Input() public seleccionado = '';
   @Output() public criterioSeleccionado = new EventEmitter<string>();
-  @Output() public SubcriterioSeleccionado = new EventEmitter<string>();
+  @Output() public subCriterioSeleccionado = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {
@@ -21,6 +21,6 @@ export class CriterionComponent implements OnInit {
   }
 
   SelSubCriterio($event) {
-    this.SubcriterioSeleccionado.next($event.srcElement.value);
+    this.subCriterioSeleccionado.next($event.srcElement.value);
   }
 }

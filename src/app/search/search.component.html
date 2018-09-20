@@ -6,7 +6,8 @@
         <app-criterion
             [seleccionado] = "seleccionado"
             [subCriterios] = "subCriterios"            
-            (criterioSeleccionado)="onCriterioSeleccionado($event)">
+            (criterioSeleccionado)="onCriterioSeleccionado($event)"
+            (subCriterioSeleccionado)="onSubCriterioSeleccionado($event)" >
         </app-criterion>        
         <app-launches-list             
             [lanzamientos]="lanzamientos">

@@ -35,7 +35,7 @@ export class ApiService {
   public getAgencies = (): Observable<any[]> =>
     this.http
       .get(environment.url + '/assets/launchagencies.json')
-      .pipe(map((res: any) => res.agencies));
+      .pipe(map((res: any) => res.agencies))
 
   public getMissionTypes = (): Observable<any[]> =>
     this.http

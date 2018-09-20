@@ -5,11 +5,9 @@
     <option value = "Agencia">Agencia</option>
     <option value= "Tipo" >Tipo</option>  
 </select>
-<!-- <select (change) = "SelSubCriterio($event)" *ngFor="let subCriterio of subCriterios; let i=index">
-    <option value = "subCriterios.name"></option>                    
-</select> -->
 <div></div>
-<select>
-    <option (change) = "SelSubCriterio($event)" *ngFor="let subCriterio of subCriterios; let i=index" [value]="subCriterio.name">{{subCriterio.name}}</option>
+<div></div>
+<select (change) = "SelSubCriterio($event)">
+    <option *ngFor="let subCriterio of subCriterios; let i=index" [(value)]="subCriterio.name">{{subCriterio.name}}</option>
 </select>
 
