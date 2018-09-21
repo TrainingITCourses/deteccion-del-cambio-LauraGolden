@@ -13,7 +13,6 @@ import {
 })
 export class LaunchesListComponent implements OnInit {
   @Input() public lanzamientos: any[];
-  @Input() public estados: any[];
   constructor() {}
 
   ngOnInit() {}

@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.seleccionado = '';
+    this.lanzamientos = [];
     console.log('OnInitSearch');
   }
 
@@ -69,7 +70,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSubCriterioSeleccionado = (SubcriterioSel: any) => {
-    const search = SubcriterioSel.toLowerCase();
+    const search: string = SubcriterioSel.toLowerCase();
 
     switch (this.criterioActual) {
       case 'Vacio':
@@ -77,28 +78,40 @@ export class SearchComponent implements OnInit {
       case 'Estado':
           const filtroEstado = this.api.launches.filter(
             l =>
-              l.name.toLowerCase().includes(search) ||
-              l.location.name.toLowerCase().includes(search)
+              // l.name.toLowerCase().includes(search) ||
+              // l.location.name.toLowerCase().includes(search)
+              // tslint:disable-next-line:radix
+              l.status === parseInt(search)
           );
           this.lanzamientos = filtroEstado;
         break;
       case 'Agencia':
         const filtroAgencia = this.api.launches.filter(
           l =>
-            l.name.toLowerCase().includes(search) ||
-            l.location.name.toLowerCase().includes(search)
+            // l.name.toLowerCase().includes(search) ||
+            // l.location.name.toLowerCase().includes(search)
+            // tslint:disable-next-line:radix
+            l.rocket.agencies[0].id === parseInt(search)
         );
         this.lanzamientos = filtroAgencia;
         break;
       case 'Tipo':
         const filtroTipo = this.api.launches.filter(
-          l =>
-            l => l.missions.id === search
+            function (l) {
+                if (l.missions !== undefined) {
+                  if (l.missions.length > 0) {
+                    // tslint:disable-next-line:radix
+                    return l.missions[0].type === parseInt(search);
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return false;
+                }
+            }
         );
         this.lanzamientos = filtroTipo;
 
-        // tslint:disable-next-line:max-line-length
-        console.log(this.lanzamientos);
       break;
     }
   }
