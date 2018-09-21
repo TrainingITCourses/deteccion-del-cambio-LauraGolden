@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  AfterContentInit
+  OnInit
 } from '@angular/core';
 
 @Component({
@@ -11,9 +11,9 @@ import {
   templateUrl: './launches-list.component.html',
   styleUrls: ['./launches-list.component.css']
 })
-export class LaunchesListComponent implements AfterContentInit {
+export class LaunchesListComponent implements OnInit {
   @Input() public lanzamientos: any[];
   constructor() {}
 
-  ngAfterContentInit() {}
+  ngOnInit() {}
 }

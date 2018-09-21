@@ -1,25 +1,23 @@
-import { Component, AfterContentInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ApiService } from '../core/api.service';
 import { ModoBusqueda } from '../app.component';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.css'],
+  providers: [ApiService]
 })
-export class SearchComponent implements AfterContentInit {
-  private dataE: any[];
-  private dataA: any[];
-  private dataT: any[];
+export class SearchComponent implements OnInit {
   public lanzamientos: any[];
   public lanFiltrados: any[] = [];
-  public subCriterios: any[] = [];
+  public a_subCriterios: any[] = [];
   public seleccionado: ModoBusqueda;
   private criterioActual: ModoBusqueda;
 
   constructor(private api: ApiService) { }
 
-  ngAfterContentInit() {
+  ngOnInit() {
     this.seleccionado = 1;
     this.lanzamientos = [];
     console.log('ngAfterContentInit');
@@ -27,46 +25,32 @@ export class SearchComponent implements AfterContentInit {
 
   onCriterioSeleccionado = (criterioSel: ModoBusqueda) => {
     console.log('criterio seleccionado' + criterioSel);
-    this.lanzamientos = [];
-    this.subCriterios = [];
     this.criterioActual = criterioSel;
    switch (criterioSel) {
       case 1: // Estado
-        this.getEstados();
-        this.subCriterios = this.dataE;
+        this.api
+        .getStatusTypes()
+        .subscribe((res: any[]) => this.a_subCriterios = res);
         break;
       case 2: // Agencia
-        this.getAgencias();
-        this.subCriterios = this.dataA;
+        this.api
+        .getAgencies()
+        .subscribe((res: any[]) => this.a_subCriterios = res);
         break;
       case 3: // Tipo'
-        this.getTipos();
-        this.subCriterios = this.dataT;
+        this.api
+        .getMissionsTypes()
+        .subscribe((res: any[]) => this.a_subCriterios = res);
         break;
+      default:
+        this.a_subCriterios = [];
     }
-  }
-
-  getAgencias = () => {
-    this.api
-      .getAgencies()
-      .subscribe((res: any[]) => this.dataA = res);
-  }
-  getEstados = () => {
-    this.api
-      .getStatusTypes$()
-      .subscribe((res: any[]) => this.dataE = res);
-  }
-
-  getTipos = () => {
-    this.api
-      .getMissionTypes()
-      .subscribe((res: any[]) => this.dataT = res);
+    this.lanzamientos = [];
   }
 
   onSubCriterioSeleccionado = (SubcriterioSel: any) => {
     console.log('Busqueda por criterio seleccionado' + SubcriterioSel);
     const search: string = SubcriterioSel.toLowerCase();
-
     switch (this.criterioActual) {
       case 1: // Estado
           const filtroEstado = this.api.launches.filter(

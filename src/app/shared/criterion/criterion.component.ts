@@ -1,5 +1,5 @@
 import { ModoBusqueda } from '../../app.component';
-import { Component, AfterContentInit, EventEmitter, Output, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -7,25 +7,18 @@ import { Component, AfterContentInit, EventEmitter, Output, Input, ChangeDetecti
   templateUrl: './criterion.component.html',
   styleUrls: ['./criterion.component.css']
 })
-export class CriterionComponent implements AfterContentInit {
+export class CriterionComponent implements OnInit {
   @Input() public subCriterios: any[];
-  @Input() public seleccionado = '';
+  @Input() public seleccionado = 0;
   @Output() public criterioSeleccionado = new EventEmitter<number>();
   @Output() public subCriterioSeleccionado = new EventEmitter<string>();
+  private _seleccionadoSubC = '';
 
   textoSeleccion: string;
   constructor() { }
 
-  ngAfterContentInit() {
-    // this.textoSeleccion = 'un estado';
-  }
-
-  @Input()
-  get value() {
-    return this.seleccionado;
-  }
-  set value(val) {
-    this.seleccionado = val;
+  ngOnInit() {
+    this.seleccionado = 0;
   }
 
   SelCriterio($event) {
@@ -38,6 +31,7 @@ export class CriterionComponent implements AfterContentInit {
     } else {
       this.textoSeleccion = 'un tipo de misión';
     }
+    this.subCriterios = [];
     // tslint:disable-next-line:radix
     modo = parseInt($event.srcElement.value);
     this.criterioSeleccionado.next(modo);
@@ -45,5 +39,13 @@ export class CriterionComponent implements AfterContentInit {
 
   SelSubCriterio($event) {
     this.subCriterioSeleccionado.next($event.srcElement.value);
+  }
+
+  get seleccionadoSubC() {
+    return this._seleccionadoSubC;
+  }
+  set seleccionadoSubC(newObj) {
+      this._seleccionadoSubC = newObj;
+      this.SelSubCriterio(newObj);
   }
 }

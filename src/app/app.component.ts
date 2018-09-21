@@ -13,5 +13,4 @@ export enum ModoBusqueda {
 })
 export class AppComponent {
   title = 'buscador lanzamientos';
-  constructor() {}
 }
