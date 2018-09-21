@@ -1,53 +1,47 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, AfterContentInit} from '@angular/core';
 import { ApiService } from '../core/api.service';
-// import { Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
-// import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ModoBusqueda } from '../app.component';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements AfterContentInit {
   private dataE: any[];
   private dataA: any[];
   private dataT: any[];
   public lanzamientos: any[];
   public lanFiltrados: any[] = [];
   public subCriterios: any[] = [];
-  public seleccionado: string;
-  private criterioActual: string;
+  public seleccionado: ModoBusqueda;
+  private criterioActual: ModoBusqueda;
 
   constructor(private api: ApiService) { }
 
-  ngOnInit() {
-    this.seleccionado = '';
+  ngAfterContentInit() {
+    this.seleccionado = 1;
     this.lanzamientos = [];
-    console.log('OnInitSearch');
+    console.log('ngAfterContentInit');
   }
 
-
-  onCriterioSeleccionado = (criterioSel: any) => {
-    switch (criterioSel) {
-      case 'Vacio':
-        this.subCriterios = [];
-        this.criterioActual = 'Vacio';
-        break;
-      case 'Estado':
+  onCriterioSeleccionado = (criterioSel: ModoBusqueda) => {
+    console.log('criterio seleccionado' + criterioSel);
+    this.lanzamientos = [];
+    this.subCriterios = [];
+    this.criterioActual = criterioSel;
+   switch (criterioSel) {
+      case 1: // Estado
         this.getEstados();
         this.subCriterios = this.dataE;
-        this.criterioActual = 'Estado';
         break;
-      case 'Agencia':
+      case 2: // Agencia
         this.getAgencias();
         this.subCriterios = this.dataA;
-        this.criterioActual = 'Agencia';
         break;
-      case 'Tipo':
+      case 3: // Tipo'
         this.getTipos();
         this.subCriterios = this.dataT;
-        this.criterioActual = 'Tipo';
         break;
     }
   }
@@ -70,44 +64,57 @@ export class SearchComponent implements OnInit {
   }
 
   onSubCriterioSeleccionado = (SubcriterioSel: any) => {
+    console.log('Busqueda por criterio seleccionado' + SubcriterioSel);
     const search: string = SubcriterioSel.toLowerCase();
 
     switch (this.criterioActual) {
-      case 'Vacio':
-      break;
-      case 'Estado':
+      case 1: // Estado
           const filtroEstado = this.api.launches.filter(
-            l =>
-              // l.name.toLowerCase().includes(search) ||
-              // l.location.name.toLowerCase().includes(search)
-              // tslint:disable-next-line:radix
-              l.status === parseInt(search)
+            function (l) {
+              let res: boolean;
+              res = false;
+              if (l.status !== undefined) {
+                // tslint:disable-next-line:radix
+                res = l.status === parseInt(search);
+             }
+             return res;
+            }
           );
           this.lanzamientos = filtroEstado;
         break;
-      case 'Agencia':
+      case 2: // Agencia
         const filtroAgencia = this.api.launches.filter(
-          l =>
-            // l.name.toLowerCase().includes(search) ||
-            // l.location.name.toLowerCase().includes(search)
-            // tslint:disable-next-line:radix
-            l.rocket.agencies[0].id === parseInt(search)
+            function (l) {
+                let res: boolean;
+                res = false;
+                if (l.rocket !== undefined && l.rocket !== null) {
+                  if (l.rocket.agencies !== undefined && l.rocket.agencies !== null) {
+                    if (l.rocket.agencies !== undefined && l.rocket.agencies !== null) {}
+                    if (l.rocket.agencies.length !== null && l.rocket.agencies.length !== undefined) {
+                      if (l.rocket.agencies.length > 0) {
+                        // tslint:disable-next-line:radix
+                        res = l.rocket.agencies[0].id === parseInt(search);
+                      }
+                    }
+                  }
+                }
+                return res;
+            }
         );
         this.lanzamientos = filtroAgencia;
         break;
-      case 'Tipo':
+      case 3: // Tipo'
         const filtroTipo = this.api.launches.filter(
             function (l) {
+                let res: boolean;
+                res = false;
                 if (l.missions !== undefined) {
                   if (l.missions.length > 0) {
                     // tslint:disable-next-line:radix
-                    return l.missions[0].type === parseInt(search);
-                  } else {
-                    return false;
+                    res = l.missions[0].type === parseInt(search);
                   }
-                } else {
-                  return false;
-                }
+               }
+               return res;
             }
         );
         this.lanzamientos = filtroTipo;

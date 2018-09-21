@@ -4,11 +4,12 @@
     </li>     -->
 
     <h4> Lista de resultados </h4>
-    <p *ngIf="lanzamientos.length == 0">Ningún lanzamiento seleccionado</p>
+    <p *ngIf="lanzamientos.length == 0">No se ha encontrado ningún lanzamiento</p>
     <div *ngIf="lanzamientos.length > 0">
         <p>Total de lanzamientos: {{ lanzamientos.length }}</p>
         <ul>
-        <li *ngFor="let lanzamiento of lanzamientos; let i=index">{{ i + 1 }} - {{ lanzamiento.name }}</li>
+        <li *ngFor="let lanzamiento of lanzamientos; let i=index"
+            >{{ i + 1 }} - {{ lanzamiento.name }}</li>
         </ul>
     </div>    
 
