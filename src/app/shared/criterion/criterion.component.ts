@@ -19,33 +19,38 @@ export class CriterionComponent implements OnInit {
 
   ngOnInit() {
     this.seleccionado = 0;
+    console.log('Criterion_ngOnInit');
   }
 
-  SelCriterio($event) {
-    let modo: ModoBusqueda;
+  selCriterio($event) {
+    let modo: number;
+    modo = parseInt($event.srcElement.value)
 
-    if ($event.srcElement.value === '1') {
+    switch (modo) {
+    case 1:
       this.textoSeleccion = 'un estado';
-    } else if ($event.srcElement.value === '2') {
+      break;
+    case 2:
       this.textoSeleccion = 'una agencia';
-    } else {
+      break;
+    case 3:
       this.textoSeleccion = 'un tipo de misión';
+      break;
     }
+
     this.subCriterios = [];
-    // tslint:disable-next-line:radix
-    modo = parseInt($event.srcElement.value);
     this.criterioSeleccionado.next(modo);
   }
 
-  SelSubCriterio($event) {
+  selSubCriterio($event) {
     this.subCriterioSeleccionado.next($event.srcElement.value);
   }
 
   get seleccionadoSubC() {
     return this._seleccionadoSubC;
   }
-  set seleccionadoSubC(newObj) {
-      this._seleccionadoSubC = newObj;
-      this.SelSubCriterio(newObj);
+  set seleccionadoSubC(value) {
+      this._seleccionadoSubC = value;
+      this.selSubCriterio(value);
   }
 }

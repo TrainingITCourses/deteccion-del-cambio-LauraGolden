@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { ApiService } from '../core/api.service';
+import { Component, OnInit, Input} from '@angular/core';
+import { ApiService } from '../services/api.service';
 import { ModoBusqueda } from '../app.component';
 
 @Component({
@@ -16,15 +16,16 @@ export class SearchComponent implements OnInit {
   private criterioActual: ModoBusqueda;
 
   constructor(private api: ApiService) { }
+  @Input() public titulo: string;
 
   ngOnInit() {
-    this.seleccionado = 1;
+    this.seleccionado = 0;
     this.lanzamientos = [];
-    console.log('ngAfterContentInit');
+    console.log('Search_ngOnInit');
   }
 
   onCriterioSeleccionado = (criterioSel: ModoBusqueda) => {
-    console.log('criterio seleccionado' + criterioSel);
+    console.log('criterio seleccionado: ' + criterioSel);
     this.criterioActual = criterioSel;
    switch (criterioSel) {
       case 1: // Estado
@@ -49,8 +50,8 @@ export class SearchComponent implements OnInit {
   }
 
   onSubCriterioSeleccionado = (SubcriterioSel: any) => {
-    console.log('Busqueda por criterio seleccionado' + SubcriterioSel);
-    const search: string = SubcriterioSel.toLowerCase();
+    console.log('Busqueda por criterio seleccionado: ' + SubcriterioSel);
+    const search: number = parseInt(SubcriterioSel);
     switch (this.criterioActual) {
       case 1: // Estado
           const filtroEstado = this.api.launches.filter(
@@ -58,8 +59,7 @@ export class SearchComponent implements OnInit {
               let res: boolean;
               res = false;
               if (l.status !== undefined) {
-                // tslint:disable-next-line:radix
-                res = l.status === parseInt(search);
+                res = l.status === search;
              }
              return res;
             }
@@ -76,8 +76,7 @@ export class SearchComponent implements OnInit {
                     if (l.rocket.agencies !== undefined && l.rocket.agencies !== null) {}
                     if (l.rocket.agencies.length !== null && l.rocket.agencies.length !== undefined) {
                       if (l.rocket.agencies.length > 0) {
-                        // tslint:disable-next-line:radix
-                        res = l.rocket.agencies[0].id === parseInt(search);
+                        res = l.rocket.agencies[0].id === search;
                       }
                     }
                   }
@@ -94,16 +93,16 @@ export class SearchComponent implements OnInit {
                 res = false;
                 if (l.missions !== undefined) {
                   if (l.missions.length > 0) {
-                    // tslint:disable-next-line:radix
-                    res = l.missions[0].type === parseInt(search);
+                    res = l.missions[0].type === search;
                   }
                }
                return res;
             }
         );
         this.lanzamientos = filtroTipo;
-
       break;
+      default:
+        this.lanzamientos = [];
     }
   }
 }

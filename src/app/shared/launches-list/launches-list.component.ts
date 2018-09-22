@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,5 +10,7 @@ export class LaunchesListComponent implements OnInit {
   @Input() public lanzamientos: any[];
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Launches-List_ngOnInit');
+  }
 }

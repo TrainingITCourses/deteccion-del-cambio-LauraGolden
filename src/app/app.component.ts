@@ -12,5 +12,5 @@ export enum ModoBusqueda {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'buscador lanzamientos';
+  title = 'Buscador lanzamientos';
 }
